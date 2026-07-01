@@ -3,6 +3,7 @@
 namespace Sockeon\Laravel;
 
 use Illuminate\Support\ServiceProvider;
+use Sockeon\Laravel\Console\InstallCommand;
 use Sockeon\Laravel\Console\ServeCommand;
 use Sockeon\Laravel\Logging\LaravelLogger;
 
@@ -16,7 +17,10 @@ class SockeonServiceProvider extends ServiceProvider
         $this->app->singleton(SockeonManager::class);
 
         if ($this->app->runningInConsole()) {
-            $this->commands([ServeCommand::class]);
+            $this->commands([
+                InstallCommand::class,
+                ServeCommand::class,
+            ]);
         }
     }
 

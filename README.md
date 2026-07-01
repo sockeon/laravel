@@ -19,7 +19,13 @@ This package wires Sockeon into Laravel's service container, config system, logg
 composer require sockeon/laravel
 ```
 
-Publish the config (optional — the package merges defaults automatically):
+Run the installer to publish config and scaffold directories:
+
+```bash
+php artisan sockeon:install
+```
+
+Or publish config only:
 
 ```bash
 php artisan vendor:publish --tag=sockeon-config
@@ -85,6 +91,9 @@ All options live in `config/sockeon.php`. Key environment variables:
 | `SOCKEON_DEBUG` | `false` | Verbose logging |
 | `SOCKEON_ENGINE` | `stream_select` | `stream_select` or `swoole` |
 | `SOCKEON_AUTO_DISCOVER` | `true` | Scan `app/Sockeon/Controllers` |
+| `SOCKEON_RATE_LIMIT_ENABLED` | `false` | Enable HTTP/WebSocket rate limits |
+| `SOCKEON_TRUST_PROXY` | `false` | Trust reverse-proxy headers |
+| `SOCKEON_MIDDLEWARE_AUTO_DISCOVER` | `false` | Scan `app/Sockeon/Middleware` |
 
 See the [Sockeon docs](https://sockeon.github.io) for survivability, scaling, CORS, and rate limiting options.
 
@@ -112,6 +121,7 @@ Per-route middleware uses `HttpRoute` / `SocketOn` attributes on your controller
 
 | Command | Description |
 |---------|-------------|
+| `sockeon:install` | Publish config and create `app/Sockeon` directories |
 | `sockeon:serve` | Start the WebSocket/HTTP server |
 
 ## Facade

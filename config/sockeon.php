@@ -146,11 +146,17 @@ return [
 
     'swoole' => [
 
-        // Number of worker processes. Defaults to CPU core count when null.
         'worker_num' => (int) env('SOCKEON_SWOOLE_WORKER_NUM', 1),
 
-        // Maximum concurrent connections the Swoole server accepts.
+        'task_worker_num' => (int) env('SOCKEON_SWOOLE_TASK_WORKER_NUM', 0),
+
         'max_connection' => (int) env('SOCKEON_SWOOLE_MAX_CONNECTION', 10_000),
+
+        'client_table_size' => env('SOCKEON_SWOOLE_CLIENT_TABLE_SIZE') !== null
+            ? (int) env('SOCKEON_SWOOLE_CLIENT_TABLE_SIZE')
+            : null,
+
+        'coroutine_dispatch' => (bool) env('SOCKEON_SWOOLE_COROUTINE_DISPATCH', true),
 
     ],
 
@@ -178,14 +184,21 @@ return [
 
         'redis' => [
 
-            'host' => env('SOCKEON_REDIS_HOST', '127.0.0.1'),
+            'host' => env('SOCKEON_REDIS_HOST', env('REDIS_HOST', '127.0.0.1')),
 
-            'port' => (int) env('SOCKEON_REDIS_PORT', 6379),
+            'port' => (int) env('SOCKEON_REDIS_PORT', env('REDIS_PORT', 6379)),
 
-            // Pub/sub channel used for cross-node broadcasts.
+            'password' => env('SOCKEON_REDIS_PASSWORD', env('REDIS_PASSWORD')),
+
+            'database' => (int) env('SOCKEON_REDIS_DB', env('REDIS_DB', 0)),
+
             'channel' => env('SOCKEON_REDIS_CHANNEL', 'sockeon:broadcast'),
 
+            'prefix' => env('SOCKEON_REDIS_PREFIX', 'sockeon:'),
+
         ],
+
+        'presence_ttl' => (int) env('SOCKEON_PRESENCE_TTL', 300),
 
     ],
 
@@ -204,7 +217,52 @@ return [
 
         'allowed_origins' => ['*'],
 
+        'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH', 'HEAD'],
+
+        'allowed_headers' => ['Content-Type', 'X-Requested-With', 'Authorization'],
+
+        'allow_credentials' => (bool) env('SOCKEON_CORS_ALLOW_CREDENTIALS', false),
+
+        'max_age' => (int) env('SOCKEON_CORS_MAX_AGE', 86400),
+
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rate Limiting
+    |--------------------------------------------------------------------------
+    |
+    | Protects against abuse on HTTP requests, WebSocket messages, and new
+    | connections. Set to null to disable. Connection caps are enforced at
+    | accept time even when "enabled" is false.
+    |
+    */
+
+    'rate_limit' => env('SOCKEON_RATE_LIMIT_ENABLED', false) ? [
+        'enabled' => true,
+        'maxHttpRequestsPerIp' => (int) env('SOCKEON_RATE_LIMIT_HTTP_PER_IP', 1000),
+        'httpTimeWindow' => (int) env('SOCKEON_RATE_LIMIT_HTTP_WINDOW', 60),
+        'maxWebSocketMessagesPerClient' => (int) env('SOCKEON_RATE_LIMIT_WS_PER_CLIENT', 2000),
+        'webSocketTimeWindow' => (int) env('SOCKEON_RATE_LIMIT_WS_WINDOW', 60),
+        'maxConnectionsPerIp' => (int) env('SOCKEON_RATE_LIMIT_CONNECTIONS_PER_IP', 500),
+        'connectionTimeWindow' => (int) env('SOCKEON_RATE_LIMIT_CONNECTION_WINDOW', 60),
+        'maxGlobalConnections' => (int) env('SOCKEON_RATE_LIMIT_GLOBAL_CONNECTIONS', 50_000),
+    ] : null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reverse Proxy
+    |--------------------------------------------------------------------------
+    |
+    | Trust X-Forwarded-* headers when running behind a load balancer or CDN.
+    | Set to true to trust all proxies, false to trust none, or provide an
+    | array of trusted proxy IP addresses and CIDR ranges.
+    |
+    */
+
+    'trust_proxy' => filter_var(env('SOCKEON_TRUST_PROXY', false), FILTER_VALIDATE_BOOL),
+
+    'proxy_headers' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -250,6 +308,12 @@ return [
     */
 
     'middleware' => [
+
+        'auto_discover' => (bool) env('SOCKEON_MIDDLEWARE_AUTO_DISCOVER', false),
+
+        'path' => app_path('Sockeon/Middleware'),
+
+        'namespace' => 'App\\Sockeon\\Middleware',
 
         'http' => [
             // App\Sockeon\Middleware\AuthMiddleware::class,
