@@ -43,15 +43,23 @@ return [
     | Logging
     |--------------------------------------------------------------------------
     |
-    | Sockeon logs through Laravel's logging system. Set "channel" to a named
-    | channel from config/logging.php (e.g. "stack", "daily", "sockeon"), or
-    | null to use the application's default log channel.
+    | Sockeon's built-in logger. When "level" is null, debug mode uses "debug"
+    | and production uses "info". Logs are written to storage/logs/sockeon by
+    | default when file logging is enabled.
     |
     */
 
     'logging' => [
 
-        'channel' => env('SOCKEON_LOG_CHANNEL'),
+        'level' => env('SOCKEON_LOG_LEVEL'),
+
+        'to_console' => (bool) env('SOCKEON_LOG_CONSOLE', true),
+
+        'to_file' => (bool) env('SOCKEON_LOG_FILE', true),
+
+        'directory' => env('SOCKEON_LOG_DIRECTORY'),
+
+        'separate_files' => (bool) env('SOCKEON_LOG_SEPARATE_FILES', false),
 
     ],
 

@@ -4,12 +4,12 @@ namespace Sockeon\Laravel;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
-use Sockeon\Laravel\Logging\LaravelLogger;
 use Sockeon\Laravel\Support\ControllerDiscovery;
 use Sockeon\Laravel\Support\MiddlewareDiscovery;
 use Sockeon\Sockeon\Config\ServerConfig;
 use Sockeon\Sockeon\Connection\Server;
 use Sockeon\Sockeon\Controllers\SocketController;
+use Sockeon\Sockeon\Logging\Logger;
 
 class SockeonManager
 {
@@ -51,7 +51,7 @@ class SockeonManager
             'middleware',
             'logging',
         ]);
-        $config['logger'] = $this->app->make(LaravelLogger::class);
+        $config['logger'] = $this->app->make(Logger::class);
 
         return $config;
     }

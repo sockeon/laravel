@@ -88,8 +88,12 @@ All options live in `config/sockeon.php`. Key environment variables:
 |----------|---------|-------------|
 | `SOCKEON_HOST` | `0.0.0.0` | Bind address |
 | `SOCKEON_PORT` | `6001` | Listen port |
-| `SOCKEON_DEBUG` | `false` | Verbose logging |
-| `SOCKEON_LOG_CHANNEL` | `null` | Laravel log channel for Sockeon output |
+| `SOCKEON_DEBUG` | `false` | Verbose logging (sets log level when `SOCKEON_LOG_LEVEL` is unset) |
+| `SOCKEON_LOG_LEVEL` | `null` | Minimum log level (`debug`, `info`, `warning`, etc.) |
+| `SOCKEON_LOG_CONSOLE` | `true` | Write logs to stdout |
+| `SOCKEON_LOG_FILE` | `true` | Write logs to disk |
+| `SOCKEON_LOG_DIRECTORY` | `storage/logs/sockeon` | Log file directory |
+| `SOCKEON_LOG_SEPARATE_FILES` | `false` | Split logs by level into subdirectories |
 | `SOCKEON_ENGINE` | `stream_select` | `stream_select` or `swoole` |
 | `SOCKEON_AUTO_DISCOVER` | `true` | Scan `app/Sockeon/Controllers` |
 | `SOCKEON_RATE_LIMIT_ENABLED` | `false` | Enable HTTP/WebSocket rate limits |
@@ -120,22 +124,12 @@ Per-route middleware uses `HttpRoute` / `SocketOn` attributes on your controller
 
 ### Logging
 
-Sockeon uses Laravel's logger. Optionally route logs to a dedicated channel in `config/logging.php`:
-
-```php
-// config/logging.php
-'channels' => [
-    'sockeon' => [
-        'driver' => 'daily',
-        'path' => storage_path('logs/sockeon.log'),
-        'level' => env('LOG_LEVEL', 'debug'),
-        'days' => 14,
-    ],
-],
-```
+Sockeon uses its own logger (colored console output and optional file logging). Configure it in `config/sockeon.php` or via env vars:
 
 ```env
-SOCKEON_LOG_CHANNEL=sockeon
+SOCKEON_LOG_LEVEL=info
+SOCKEON_LOG_FILE=true
+SOCKEON_LOG_DIRECTORY=/var/log/sockeon
 ```
 
 ## Artisan commands
