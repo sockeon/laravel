@@ -25,6 +25,7 @@ class SockeonManager
         $config = config('sockeon', []);
         $serverConfig = new ServerConfig($this->serverConfigArray($config));
         $this->server = new Server($serverConfig);
+        $this->registerMiddleware($this->server);
         $this->registerControllers($this->server);
 
         return $this->server;
@@ -46,10 +47,29 @@ class SockeonManager
             'auto_discover',
             'controllers_path',
             'controllers_namespace',
+            'middleware',
         ]);
         $config['logger'] = $this->app->make(LaravelLogger::class);
 
         return $config;
+    }
+
+    private function registerMiddleware(Server $server): void
+    {
+        /** @var array{http?: list<class-string>, websocket?: list<class-string>, handshake?: list<class-string>} $middleware */
+        $middleware = config('sockeon.middleware', []);
+
+        foreach ($middleware['http'] ?? [] as $class) {
+            $server->addHttpMiddleware($class);
+        }
+
+        foreach ($middleware['websocket'] ?? [] as $class) {
+            $server->addWebSocketMiddleware($class);
+        }
+
+        foreach ($middleware['handshake'] ?? [] as $class) {
+            $server->addHandshakeMiddleware($class);
+        }
     }
 
     private function registerControllers(Server $server): void

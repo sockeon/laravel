@@ -88,6 +88,26 @@ All options live in `config/sockeon.php`. Key environment variables:
 
 See the [Sockeon docs](https://sockeon.github.io) for survivability, scaling, CORS, and rate limiting options.
 
+### Middleware
+
+Register global middleware in `config/sockeon.php`:
+
+```php
+'middleware' => [
+    'http' => [
+        App\Sockeon\Middleware\AuthMiddleware::class,
+    ],
+    'websocket' => [
+        App\Sockeon\Middleware\AuthenticateSocket::class,
+    ],
+    'handshake' => [
+        App\Sockeon\Middleware\VerifyAuthKey::class,
+    ],
+],
+```
+
+Per-route middleware uses `HttpRoute` / `SocketOn` attributes on your controllers. See [Middleware](https://sockeon.github.io/v3.0/core/middleware.md).
+
 ## Artisan commands
 
 | Command | Description |

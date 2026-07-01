@@ -233,4 +233,36 @@ return [
     // PHP namespace that maps to controllers_path.
     'controllers_namespace' => 'App\\Sockeon\\Controllers',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Global Middleware
+    |--------------------------------------------------------------------------
+    |
+    | Middleware classes registered on every Sockeon HTTP request, WebSocket
+    | event, or handshake. Each class must implement the matching Sockeon
+    | contract: HttpMiddleware, WebsocketMiddleware, or HandshakeMiddleware.
+    |
+    | Route-specific middleware is still declared on controller attributes
+    | (HttpRoute, SocketOn). Sockeon instantiates middleware with "new", so
+    | constructors cannot use Laravel dependency injection — resolve services
+    | from the container inside handle() if needed.
+    |
+    */
+
+    'middleware' => [
+
+        'http' => [
+            // App\Sockeon\Middleware\AuthMiddleware::class,
+        ],
+
+        'websocket' => [
+            // App\Sockeon\Middleware\AuthenticateSocket::class,
+        ],
+
+        'handshake' => [
+            // App\Sockeon\Middleware\VerifyAuthKey::class,
+        ],
+
+    ],
+
 ];

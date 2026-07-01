@@ -5,6 +5,7 @@ namespace Sockeon\Laravel\Tests\Feature;
 use Orchestra\Testbench\TestCase;
 use Sockeon\Laravel\SockeonManager;
 use Sockeon\Laravel\SockeonServiceProvider;
+use Sockeon\Laravel\Tests\Fixtures\RecordingHttpMiddleware;
 use Sockeon\Sockeon\Connection\Server;
 
 class ServeCommandTest extends TestCase
@@ -19,6 +20,7 @@ class ServeCommandTest extends TestCase
         $this->assertIsArray(config('sockeon'));
         $this->assertSame('0.0.0.0', config('sockeon.host'));
         $this->assertSame(6001, config('sockeon.port'));
+        $this->assertIsArray(config('sockeon.middleware'));
     }
 
     public function test_manager_creates_server(): void
@@ -26,5 +28,15 @@ class ServeCommandTest extends TestCase
         $server = $this->app->make(SockeonManager::class)->server();
 
         $this->assertInstanceOf(Server::class, $server);
+    }
+
+    public function test_manager_registers_configured_middleware(): void
+    {
+        config()->set('sockeon.middleware.http', [RecordingHttpMiddleware::class]);
+
+        $server = $this->app->make(SockeonManager::class)->server();
+        $stack = (new \ReflectionProperty($server->getMiddleware(), 'httpStack'))->getValue($server->getMiddleware());
+
+        $this->assertSame([RecordingHttpMiddleware::class], $stack);
     }
 }
