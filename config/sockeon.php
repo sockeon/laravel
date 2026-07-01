@@ -40,6 +40,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Logging
+    |--------------------------------------------------------------------------
+    |
+    | Sockeon logs through Laravel's logging system. Set "channel" to a named
+    | channel from config/logging.php (e.g. "stack", "daily", "sockeon"), or
+    | null to use the application's default log channel.
+    |
+    */
+
+    'logging' => [
+
+        'channel' => env('SOCKEON_LOG_CHANNEL'),
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Runtime Engine
     |--------------------------------------------------------------------------
     |

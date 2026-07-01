@@ -49,6 +49,7 @@ class SockeonManager
             'controllers_path',
             'controllers_namespace',
             'middleware',
+            'logging',
         ]);
         $config['logger'] = $this->app->make(LaravelLogger::class);
 

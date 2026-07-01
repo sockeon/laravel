@@ -21,7 +21,7 @@ class ServeCommandTest extends TestCase
         $this->assertIsArray(config('sockeon'));
         $this->assertSame('0.0.0.0', config('sockeon.host'));
         $this->assertSame(6001, config('sockeon.port'));
-        $this->assertIsArray(config('sockeon.middleware'));
+        $this->assertNull(config('sockeon.logging.channel'));
     }
 
     public function test_manager_creates_server(): void

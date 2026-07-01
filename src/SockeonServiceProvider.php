@@ -13,7 +13,15 @@ class SockeonServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/sockeon.php', 'sockeon');
 
-        $this->app->singleton(LaravelLogger::class, fn ($app) => new LaravelLogger($app['log']->driver()));
+        $this->app->singleton(LaravelLogger::class, function ($app) {
+            $channel = config('sockeon.logging.channel');
+
+            $logger = is_string($channel) && $channel !== ''
+                ? $app['log']->channel($channel)
+                : $app['log']->driver();
+
+            return new LaravelLogger($logger);
+        });
         $this->app->singleton(SockeonManager::class);
 
         if ($this->app->runningInConsole()) {

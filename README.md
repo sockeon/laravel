@@ -89,6 +89,7 @@ All options live in `config/sockeon.php`. Key environment variables:
 | `SOCKEON_HOST` | `0.0.0.0` | Bind address |
 | `SOCKEON_PORT` | `6001` | Listen port |
 | `SOCKEON_DEBUG` | `false` | Verbose logging |
+| `SOCKEON_LOG_CHANNEL` | `null` | Laravel log channel for Sockeon output |
 | `SOCKEON_ENGINE` | `stream_select` | `stream_select` or `swoole` |
 | `SOCKEON_AUTO_DISCOVER` | `true` | Scan `app/Sockeon/Controllers` |
 | `SOCKEON_RATE_LIMIT_ENABLED` | `false` | Enable HTTP/WebSocket rate limits |
@@ -116,6 +117,26 @@ Register global middleware in `config/sockeon.php`:
 ```
 
 Per-route middleware uses `HttpRoute` / `SocketOn` attributes on your controllers. See [Middleware](https://sockeon.github.io/v3.0/core/middleware.md).
+
+### Logging
+
+Sockeon uses Laravel's logger. Optionally route logs to a dedicated channel in `config/logging.php`:
+
+```php
+// config/logging.php
+'channels' => [
+    'sockeon' => [
+        'driver' => 'daily',
+        'path' => storage_path('logs/sockeon.log'),
+        'level' => env('LOG_LEVEL', 'debug'),
+        'days' => 14,
+    ],
+],
+```
+
+```env
+SOCKEON_LOG_CHANNEL=sockeon
+```
 
 ## Artisan commands
 
