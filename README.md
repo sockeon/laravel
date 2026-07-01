@@ -105,21 +105,6 @@ $server->broadcast('notification', ['message' => 'Hello']);
 
 The server instance is created once per process and controllers are resolved through Laravel's container (constructor injection works).
 
-## Package layout
-
-```
-sockeon-laravel/
-├── config/sockeon.php          # Default configuration
-├── src/
-│   ├── Console/ServeCommand.php
-│   ├── Facades/Sockeon.php
-│   ├── Logging/LaravelLogger.php
-│   ├── Support/ControllerDiscovery.php
-│   ├── SockeonManager.php
-│   └── SockeonServiceProvider.php
-└── tests/
-```
-
 ## Testing
 
 ```bash
