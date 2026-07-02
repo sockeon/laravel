@@ -3104,12 +3104,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sockeon/sockeon.git",
-                "reference": "6c4ae213b2220d92dd889c801e6154ec8275da65"
+                "reference": "b6818164b2cf02000b8d749d06eaba4dd3f2034b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sockeon/sockeon/zipball/6c4ae213b2220d92dd889c801e6154ec8275da65",
-                "reference": "6c4ae213b2220d92dd889c801e6154ec8275da65",
+                "url": "https://api.github.com/repos/sockeon/sockeon/zipball/b6818164b2cf02000b8d749d06eaba4dd3f2034b",
+                "reference": "b6818164b2cf02000b8d749d06eaba4dd3f2034b",
                 "shasum": ""
             },
             "require": {
@@ -3160,7 +3160,7 @@
                 "issues": "https://github.com/sockeon/sockeon/issues",
                 "source": "https://github.com/sockeon/sockeon/tree/main"
             },
-            "time": "2026-07-01T08:50:17+00:00"
+            "time": "2026-07-02T05:57:35+00:00"
         },
         {
             "name": "symfony/clock",
