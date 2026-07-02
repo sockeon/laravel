@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fbbdded56843a72925b6cef0f6a4baa4",
+    "content-hash": "beaa72e236ff49c76aa72fb6fc5d101e",
     "packages": [
         {
             "name": "brick/math",
@@ -3100,11 +3100,17 @@
         },
         {
             "name": "sockeon/sockeon",
-            "version": "3.0.0",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sockeon/sockeon.git",
+                "reference": "6c4ae213b2220d92dd889c801e6154ec8275da65"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../../framework",
-                "reference": "2964cf25ab9db602ee1c33c96c1c2fb811eda7e7"
+                "type": "zip",
+                "url": "https://api.github.com/repos/sockeon/sockeon/zipball/6c4ae213b2220d92dd889c801e6154ec8275da65",
+                "reference": "6c4ae213b2220d92dd889c801e6154ec8275da65",
+                "shasum": ""
             },
             "require": {
                 "ext-openssl": "*",
@@ -3120,17 +3126,14 @@
                 "ext-openswoole": "Required for engine=swoole high-concurrency mode",
                 "ext-redis": "Required for scale.publisher=redis or scale.registry=redis multi-node mode"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Sockeon\\Sockeon\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3142,6 +3145,7 @@
             ],
             "description": "Framework-agnostic PHP WebSocket and HTTP server library with attribute-based routing and support for namespaces and rooms.",
             "keywords": [
+                "Socket",
                 "event-driven",
                 "framework-agnostic",
                 "http",
@@ -3149,13 +3153,14 @@
                 "laravel",
                 "php",
                 "realtime",
-                "socket",
                 "symfony",
                 "websocket"
             ],
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/sockeon/sockeon/issues",
+                "source": "https://github.com/sockeon/sockeon/tree/main"
+            },
+            "time": "2026-07-01T08:50:17+00:00"
         },
         {
             "name": "symfony/clock",
@@ -8771,7 +8776,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": {
+        "sockeon/sockeon": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

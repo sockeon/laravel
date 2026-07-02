@@ -183,6 +183,18 @@ return [
 
         'coroutine_dispatch' => (bool) env('SOCKEON_SWOOLE_COROUTINE_DISPATCH', true),
 
+        // PHP memory_limit for Swoole workers (auto: 2G at 10k max_connection).
+        'memory_limit' => env('SOCKEON_SWOOLE_MEMORY_LIMIT', '2G'),
+
+        // Per-connection buffer caps (bytes). null = auto (32KB at 10k connections).
+        'socket_buffer_size' => env('SOCKEON_SWOOLE_SOCKET_BUFFER_SIZE') !== null ? (int) env('SOCKEON_SWOOLE_SOCKET_BUFFER_SIZE') : null,
+
+        // Per-connection output buffer (bytes). null = auto (32KB at 10k connections).
+        'buffer_output_size' => env('SOCKEON_SWOOLE_BUFFER_OUTPUT_SIZE') !== null ? (int) env('SOCKEON_SWOOLE_BUFFER_OUTPUT_SIZE') : null,
+
+        // TCP listen backlog for connection ramps (null = auto from max_connection).
+        'backlog' => env('SOCKEON_SWOOLE_BACKLOG') !== null ? (int) env('SOCKEON_SWOOLE_BACKLOG') : null,
+
     ],
 
     /*

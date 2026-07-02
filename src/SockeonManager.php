@@ -15,6 +15,12 @@ class SockeonManager
 {
     private ?Server $server = null;
 
+    /** @var list<class-string<SocketController>>|null */
+    private ?array $resolvedControllers = null;
+
+    /** @var array{http: list<class-string>, websocket: list<class-string>, handshake: list<class-string>}|null */
+    private ?array $resolvedMiddlewareClasses = null;
+
     public function __construct(private Application $app) {}
 
     public function server(): Server
@@ -58,6 +64,35 @@ class SockeonManager
 
     private function registerMiddleware(Server $server): void
     {
+        foreach ($this->resolvedMiddleware() as $type => $classes) {
+            foreach ($classes as $class) {
+                match ($type) {
+                    'http' => $server->addHttpMiddleware($class),
+                    'websocket' => $server->addWebSocketMiddleware($class),
+                    'handshake' => $server->addHandshakeMiddleware($class),
+                    default => null,
+                };
+            }
+        }
+    }
+
+    /**
+     * @return list<class-string<SocketController>>
+     */
+    public function registeredControllers(): array
+    {
+        return $this->resolveControllerClasses();
+    }
+
+    /**
+     * @return array{http: list<class-string>, websocket: list<class-string>, handshake: list<class-string>}
+     */
+    public function resolvedMiddleware(): array
+    {
+        if ($this->resolvedMiddlewareClasses !== null) {
+            return $this->resolvedMiddlewareClasses;
+        }
+
         /** @var array{
          *     auto_discover?: bool,
          *     path?: string,
@@ -83,17 +118,11 @@ class SockeonManager
             $handshake = array_values(array_unique([...$handshake, ...$discovered['handshake']]));
         }
 
-        foreach ($http as $class) {
-            $server->addHttpMiddleware($class);
-        }
-
-        foreach ($websocket as $class) {
-            $server->addWebSocketMiddleware($class);
-        }
-
-        foreach ($handshake as $class) {
-            $server->addHandshakeMiddleware($class);
-        }
+        return $this->resolvedMiddlewareClasses = [
+            'http' => $http,
+            'websocket' => $websocket,
+            'handshake' => $handshake,
+        ];
     }
 
     private function registerControllers(Server $server): void
@@ -110,6 +139,10 @@ class SockeonManager
      */
     private function resolveControllerClasses(): array
     {
+        if ($this->resolvedControllers !== null) {
+            return $this->resolvedControllers;
+        }
+
         $config = config('sockeon', []);
         /** @var list<class-string<SocketController>> $classes */
         $classes = $config['controllers'] ?? [];
@@ -122,6 +155,6 @@ class SockeonManager
             $classes = array_values(array_unique([...$classes, ...$discovered]));
         }
 
-        return $classes;
+        return $this->resolvedControllers = $classes;
     }
 }
