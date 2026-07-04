@@ -3104,12 +3104,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sockeon/sockeon.git",
-                "reference": "1afc32c4fd59f9020d71341d7d95bceb49794602"
+                "reference": "31b55a5f03cc5d98d303bd0a84da409a36eecd1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sockeon/sockeon/zipball/1afc32c4fd59f9020d71341d7d95bceb49794602",
-                "reference": "1afc32c4fd59f9020d71341d7d95bceb49794602",
+                "url": "https://api.github.com/repos/sockeon/sockeon/zipball/31b55a5f03cc5d98d303bd0a84da409a36eecd1f",
+                "reference": "31b55a5f03cc5d98d303bd0a84da409a36eecd1f",
                 "shasum": ""
             },
             "require": {
@@ -3127,6 +3127,9 @@
                 "ext-redis": "Required for scale.publisher=redis or scale.registry=redis multi-node mode"
             },
             "default-branch": true,
+            "bin": [
+                "bin/sockeon-upgrade"
+            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -3160,7 +3163,7 @@
                 "issues": "https://github.com/sockeon/sockeon/issues",
                 "source": "https://github.com/sockeon/sockeon/tree/main"
             },
-            "time": "2026-07-03T06:54:06+00:00"
+            "time": "2026-07-04T13:12:30+00:00"
         },
         {
             "name": "symfony/clock",
